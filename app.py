@@ -1,25 +1,31 @@
-
 from dotenv import load_dotenv
 import os
 import streamlit as st
 from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
 from selenium.common.exceptions import NoSuchElementException
+from webdriver_manager.chrome import ChromeDriverManager
 import time
 import re
 
+# Load environment variables
 load_dotenv()
 
 LINKEDIN_USERNAME = os.getenv("LINKEDIN_USERNAME")
 LINKEDIN_PASSWORD = os.getenv("LINKEDIN_PASSWORD")
 
-
 def create_driver():
     options = Options()
     options.add_argument("--disable-blink-features=AutomationControlled")
-    options.add_argument("--headless")  # Uncomment to run headless
-    driver = webdriver.Chrome(options=options)
+    options.add_argument("--headless=new")
+    options.add_argument("--no-sandbox")
+    options.add_argument("--disable-dev-shm-usage")
+
+    # Use Service to wrap the chromedriver path
+    service = Service(ChromeDriverManager().install())
+    driver = webdriver.Chrome(service=service, options=options)
     return driver
 
 def scrape_emails_from_profile(driver, profile_url):
