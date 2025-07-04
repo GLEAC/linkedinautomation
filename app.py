@@ -18,7 +18,7 @@ LINKEDIN_PASSWORD = os.getenv("LINKEDIN_PASSWORD")
 def create_driver():
     options = Options()
     options.add_argument("--disable-blink-features=AutomationControlled")
-    options.add_argument("--headless")  # Uncomment to run headless
+    #options.add_argument("--headless")  # Uncomment to run headless
     driver = webdriver.Chrome(options=options)
     return driver
 
